@@ -1,0 +1,44 @@
+#!/usr/bin/env fish
+# mise description="Bump CalVer version, commit, and tag"
+#USAGE arg "[version]" help="Optional version override (e.g. 2026.4.1). Skips auto-increment and force-moves any existing tag."
+
+if test -n "$usage_version"
+    set new_version $usage_version
+else
+    set year (date +%Y)
+    set month (date +%-m)
+
+    # Find the latest tag matching the current year.month prefix
+    set prefix "v$year.$month"
+    set latest_tag (git tag -l "$prefix.*" --sort=-v:refnum | head -n1)
+
+    if test -z "$latest_tag"
+        set next_increment 1
+    else
+        # Extract the increment (third component) from the latest tag
+        set current_increment (string split '.' "$latest_tag")[-1]
+        set next_increment (math $current_increment + 1)
+    end
+
+    set new_version "$year.$month.$next_increment"
+end
+
+echo "Bumping version to $new_version"
+
+# Create a dedicated jj change for the version bump
+jj new --no-pager
+
+# Update @version in mix.exs
+sed -i '' "s/@version \"[^\"]*\"/@version \"$new_version\"/" mix.exs
+
+# Update version in README.md install instructions
+sed -i '' "s/{:absinthe_altair, \"~> [^\"]*\"}/{:absinthe_altair, \"~> $new_version\"}/" README.md
+
+# Describe the change
+JJ_EDITOR=true jj describe --message "release: v$new_version" --no-pager
+
+# Resolve the jj commit to a git SHA and tag it
+set jj_commit (jj log -r @ --no-graph -T 'commit_id' --no-pager)
+git tag -asf "v$new_version" "$jj_commit" -m "Release v$new_version"
+
+echo "Tagged v$new_version at $(string sub -l 12 $jj_commit)"

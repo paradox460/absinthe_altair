@@ -11,7 +11,7 @@ Add `absinthe_altair` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:absinthe_altair, "~> 0.1.0"}
+    {:absinthe_altair, "~> 2026.4.1"}
   ]
 end
 ```
