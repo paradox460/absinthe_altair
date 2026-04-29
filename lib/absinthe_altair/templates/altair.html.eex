@@ -1,0 +1,40 @@
+<!--
+  This request included "Accept: text/html" and has been presented the
+  Altair GraphQL Client. For JSON responses, use "Accept: application/json".
+-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <base href="<%= config.base_url %>">
+  <title>Altair GraphQL Client</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root>
+    <style>
+      .loading-screen {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100vw;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        color: #6b7280;
+        font-size: 1.125rem;
+        background: #1a1a2e;
+      }
+    </style>
+    <div class="loading-screen">Loading Altair...</div>
+  </app-root>
+  <script src="polyfills.js" type="module"></script>
+  <script src="main.js" type="module"></script>
+  <script type="module">
+    document.addEventListener("DOMContentLoaded", () => {
+      AltairGraphQL.init(<%= config.init_options_js %>);
+    });
+  </script>
+</body>
+</html>
