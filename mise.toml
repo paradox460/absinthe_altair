@@ -1,7 +1,11 @@
 [tools]
 erlang = "28.5"
 elixir = "1.19.5-otp-28"
+pkl = "0.31.1"
 
 [settings]
 lockfile = true
 pin = true
+
+[env]
+MIX_OS_DEPS_COMPILE_PARTITION_COUNT = { value = "{{ exec(command='nproc 2>/dev/null || sysctl -n hw.ncpu 2>/dev/null || echo 1') }}", tools = true }

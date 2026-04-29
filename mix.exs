@@ -37,7 +37,10 @@ defmodule AbsintheAltair.MixProject do
       {:plug, "~> 1.14"},
       {:jason, "~> 1.0"},
       {:absinthe_plug, "~> 1.5", optional: true},
-      {:ex_doc, "~> 0.30", only: :dev, runtime: false}
+      {:ex_doc, "~> 0.30", only: :dev, runtime: false},
+      {:credo, "~> 1.7", runtime: false, only: [:dev, :test]},
+      {:dialyxir, "~> 1.4", runtime: false, only: [:dev, :test]},
+      {:quokka, "~> 2.12", runtime: false, only: [:dev, :test]}
     ]
   end
 

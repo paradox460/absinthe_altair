@@ -1,0 +1,84 @@
+amends "@com.github.actions/Workflow.pkl"
+
+import "@com.github.actions/AbstractTypedStep.pkl"
+import "@com.github.actions/Step.pkl" as StepModule
+import "@com.github.actions/catalog.pkl"
+import "./MiseAction.pkl"
+
+local typealias Step = *StepModule | AbstractTypedStep
+
+on {
+  push {}
+}
+
+local setupSteps: Listing<Step> = new {
+  (catalog.`actions/checkout@v6`)
+  (MiseAction)
+  (catalog.`actions/cache@v4`) {
+    name = "Elixir Deps Cache"
+    id = "elixir-deps-cache"
+    with {
+      path = """
+        deps
+        _build
+        .mix/archives/
+        """
+      key = "elixir-build-${{hashFiles('.mise.lock')}}-${{hashFiles('mix.lock')}}"
+      `restore-keys` = "elixir-build-${{hashFiles('.mise.lock')}}-"
+    }
+  }
+  new {
+    name = "Install Elixir deps"
+    run = """
+      mix local.hex --force --if-missing
+      mix deps.get
+      mix deps.compile
+      """
+  }
+}
+
+jobs {
+  ["setup"] {
+    `runs-on` = "ubuntu-latest"
+    steps {
+      ...setupSteps
+    }
+  }
+  ["lint"] {
+    `runs-on` = "ubuntu-latest"
+    needs = "setup"
+    steps {
+      ...setupSteps
+      new {
+        name = "Run formatter"
+        run = "mix format --check-formatted"
+      }
+      new {
+        name = "Run credo"
+        run = "mix credo --strict"
+      }
+    }
+  }
+  ["test"] {
+    `runs-on` = "ubuntu-latest"
+    needs = "setup"
+    steps {
+      ...setupSteps
+      new {
+        name = "Run tests"
+        run = "mix test --warnings-as-errors"
+      }
+    }
+  }
+  ["dialyzer"] {
+    `runs-on` = "ubuntu-latest"
+    needs = "setup"
+    steps {
+      ...setupSteps
+      new {
+        name = "Run dialyzer"
+        run = "mix dialyzer --format dialyxir"
+      }
+    }
+  }
+}
