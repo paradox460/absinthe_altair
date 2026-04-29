@@ -2,7 +2,7 @@ defmodule AbsintheAltair.MixProject do
   use Mix.Project
 
   @version "2026.4.1"
-  @source_url "https://github.com/sandberg/absinthe_altair"
+  @source_url "https://github.com/paradox460/absinthe_altair"
 
   def project do
     [
