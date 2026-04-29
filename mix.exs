@@ -35,7 +35,6 @@ defmodule AbsintheAltair.MixProject do
   defp deps do
     [
       {:plug, "~> 1.14"},
-      {:jason, "~> 1.0"},
       {:absinthe_plug, "~> 1.5", optional: true},
       {:ex_doc, "~> 0.30", only: :dev, runtime: false},
       {:credo, "~> 1.7", runtime: false, only: [:dev, :test]},

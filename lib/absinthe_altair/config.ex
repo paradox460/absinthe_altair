@@ -119,7 +119,7 @@ defmodule AbsintheAltair.Config do
   end
 
   defp js_pair(key, value) when is_map(value) and map_size(value) > 0 do
-    "      #{to_js_key(key)}: #{Jason.encode!(value)}"
+    "      #{to_js_key(key)}: #{JSON.encode!(value)}"
   end
 
   defp js_pair(key, value) when is_boolean(value) do
@@ -131,7 +131,7 @@ defmodule AbsintheAltair.Config do
   end
 
   defp js_pair(key, value) when is_list(value) and value != [] do
-    "      #{to_js_key(key)}: #{Jason.encode!(value)}"
+    "      #{to_js_key(key)}: #{JSON.encode!(value)}"
   end
 
   defp js_pair(_key, _value), do: nil
