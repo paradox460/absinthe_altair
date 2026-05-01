@@ -13,7 +13,7 @@ defmodule AbsintheAltair.Config do
   argument (the `Plug.Conn`).
   """
 
-  @internal_keys [:altair_version, :schema, :absinthe_plug_config]
+  @internal_keys [:altair_version, :schema, :absinthe_plug_config, :page_title]
 
   @doc """
   Resolves all dynamic configuration values and builds the template config map.
@@ -30,7 +30,8 @@ defmodule AbsintheAltair.Config do
 
     %{
       base_url: AbsintheAltair.Assets.cdn_base_url(opts[:altair_version]),
-      init_options_js: build_init_options(resolved)
+      init_options_js: build_init_options(resolved),
+      page_title: opts[:page_title] || "Altair GraphQL Client"
     }
   end
 

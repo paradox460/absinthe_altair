@@ -84,6 +84,8 @@ Any [Altair configuration property](https://altairgraphql.dev/api/core/config/cl
 | `:initial_settings` | `map` | `nil` | Altair application settings. |
 | `:altair_version` | `binary` | `"8.5.2"` | `altair-static` npm package version to load from CDN. |
 | `:schema` | `atom` | `nil` | Absinthe schema module. Enables API delegation for non-HTML requests when `absinthe_plug` is available. |
+| `:page_title` | `binary` | `"Altair GraphQL Client"` | Title for the HTML page. |
+
 
 For the full list of supported Altair options, see the [AltairConfig API reference](https://altairgraphql.dev/api/core/config/classes/AltairConfig).
 
